@@ -1,0 +1,54 @@
+{
+  "books": {
+    "1": {
+      "id": 1,
+      "title": "Clean Code",
+      "author": 1
+    },
+    "2": {
+      "id": 2,
+      "title": "Clean Architecture",
+      "author": 1
+    }
+  },
+  "authors": {
+    "1": {
+      "id": 1,
+      "name": "Uncle Bob"
+    }
+  },
+  "users": {
+    "1": {
+      "id": 1,
+      "email": "chano@amalgama.co",
+      "nickname": "Chano",
+      "favorite_books": [
+        {
+          "id": 1,
+          "title": "Clean Code",
+          "favorited_at": "2024-01-01",
+          "author": 1
+        }
+      ]
+    },
+    "2": {
+      "id": 2,
+      "email": "sebastian@amalgama.co",
+      "nickname": "Biche",
+      "favorite_books": [
+        {
+          "id": 1,
+          "title": "Clean Code",
+          "favorited_at": "2024-06-30",
+          "author": 1
+        },
+        {
+          "id": 2,
+          "title": "Clean Architecture",
+          "favorited_at": "2024-12-31",
+          "author": 1
+        }
+      ]
+    }
+  }
+}
