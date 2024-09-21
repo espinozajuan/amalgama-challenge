@@ -6,13 +6,14 @@ import { Label } from '@/components/ui/label';
 import { CardContent, CardFooter } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
+import { LoadingSpinner } from '../ui/LoadingSpinner';
+import { LoginFormProps } from './types';
 
-interface LoginFormProps {
-  onSubmit: (email: string, password: string) => Promise<void>;
-  errorMessage: string;
-}
-
-const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, errorMessage }) => {
+const LoginForm: React.FC<LoginFormProps> = ({
+  onSubmit,
+  errorMessage,
+  isSubmitting,
+}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -54,8 +55,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, errorMessage }) => {
         </div>
       </CardContent>
       <CardFooter className='flex flex-col items-start space-y-2'>
-        <Button type='submit' className='w-full'>
-          Log in
+        <Button type='submit' className='w-full' disabled={isSubmitting}>
+          {isSubmitting ? <LoadingSpinner className='h-5 w-5' /> : 'Log in'}
         </Button>
       </CardFooter>
     </form>

@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -9,13 +8,21 @@ import {
   CreditCard,
   Settings,
 } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { useState } from 'react';
 
 const Dashboard: React.FC = () => {
-  const router = useRouter();
+  const { logout } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    router.push('/login');
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await logout();
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   return (
@@ -30,9 +37,16 @@ const Dashboard: React.FC = () => {
             variant='outline'
             className='flex items-center'
             onClick={handleLogout}
+            disabled={isLoggingOut}
           >
-            <LogOut className='h-4 w-4 mr-2' />
-            Logout
+            {isLoggingOut ? (
+              <LoadingSpinner className='h-4 w-4 mr-2' />
+            ) : (
+              <>
+                <LogOut className='h-4 w-4 mr-2' />
+                Log out
+              </>
+            )}
           </Button>
         </div>
       </header>

@@ -1,6 +1,7 @@
 export interface LoginFormProps {
   onSubmit: (email: string, password: string) => Promise<void>;
   errorMessage: string;
+  isSubmitting: boolean;
 }
 
 export interface LoginRequest {

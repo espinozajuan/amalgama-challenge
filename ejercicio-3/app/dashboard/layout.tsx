@@ -1,29 +1,27 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { useAuth } from '@/context/AuthContext';
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
+    if (!isAuthenticated()) {
       router.push('/login');
-    } else {
-      setLoading(false);
     }
-  }, [router]);
+  }, [isAuthenticated, router]);
 
-  if (loading) {
+  if (!isAuthenticated()) {
     return (
       <div className='flex justify-center items-center min-h-screen'>
-        <LoadingSpinner className='h-8 w-8' />
+        <LoadingSpinner className='h-8 w-8' />{' '}
       </div>
     );
   }

@@ -10,24 +10,27 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { loginUser } from '@/lib/services/api';
 import LoginForm from '@/components/LoginForm/LoginForm';
+import { useAuth } from '@/context/AuthContext';
 
 const LoginPage = () => {
   const [error, setError] = useState('');
   const router = useRouter();
+  const { isAuthenticated, login } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
+    if (isAuthenticated()) {
       router.push('/dashboard');
     }
-  }, [router]);
+  }, [isAuthenticated, router]);
 
-  const login = async (email: string, password: string) => {
+  const handleLogin = async (email: string, password: string) => {
+    setIsSubmitting(true);
     try {
       setError('');
       const data = await loginUser({ email, password });
 
-      localStorage.setItem('authToken', data.token);
+      login(data.token);
       router.push('/dashboard');
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -37,6 +40,8 @@ const LoginPage = () => {
           setError('An error occurred. Please try again later.');
         }
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -49,7 +54,11 @@ const LoginPage = () => {
             Enter your credentials to access your account.
           </CardDescription>
         </CardHeader>
-        <LoginForm onSubmit={login} errorMessage={error} />
+        <LoginForm
+          onSubmit={handleLogin}
+          errorMessage={error}
+          isSubmitting={isSubmitting}
+        />
       </Card>
     </div>
   );
